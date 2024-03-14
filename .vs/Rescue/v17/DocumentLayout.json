@@ -7,16 +7,16 @@
       "RelativeMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|solutionrelative:rescue\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|C:\\Users\\use\\source\\repos\\RescueGUI\\rescue\\form1.resx||{FF4D6ACA-9352-4A5F-821E-F4D6EBDCAB11}",
-      "RelativeMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|solutionrelative:rescue\\form1.resx||{FF4D6ACA-9352-4A5F-821E-F4D6EBDCAB11}"
+      "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|solutionrelative:Rescue\\Form1.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|c:\\users\\use\\source\\repos\\rescuegui\\rescue\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|solutionrelative:rescue\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|solutionrelative:Rescue\\Form1.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|C:\\Users\\use\\source\\repos\\RescueGUI\\rescue\\form1.resx||{FF4D6ACA-9352-4A5F-821E-F4D6EBDCAB11}",
+      "RelativeMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|solutionrelative:rescue\\form1.resx||{FF4D6ACA-9352-4A5F-821E-F4D6EBDCAB11}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,30 +26,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Form1.resx",
               "DocumentMoniker": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.resx",
               "RelativeDocumentMoniker": "Rescue\\Form1.resx",
-              "ToolTip": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.resx*",
-              "RelativeToolTip": "Rescue\\Form1.resx*",
+              "ToolTip": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.resx",
+              "RelativeToolTip": "Rescue\\Form1.resx",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
               "WhenOpened": "2024-03-08T04:18:22.712Z",
               "IsPinned": true,
               "EditorCaption": ""
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Form1.Designer.cs",
               "DocumentMoniker": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.Designer.cs",
               "RelativeDocumentMoniker": "Rescue\\Form1.Designer.cs",
-              "ToolTip": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.Designer.cs*",
-              "RelativeToolTip": "Rescue\\Form1.Designer.cs*",
-              "ViewState": "AQIAAAIAAAAAAAAAAAAqwAAAAAAAAAAA",
+              "ToolTip": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.Designer.cs",
+              "RelativeToolTip": "Rescue\\Form1.Designer.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-08T04:18:22.784Z",
               "EditorCaption": ""
@@ -60,8 +64,8 @@
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.cs",
               "RelativeDocumentMoniker": "Rescue\\Form1.cs",
-              "ToolTip": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.cs [Design]*",
-              "RelativeToolTip": "Rescue\\Form1.cs [Design]*",
+              "ToolTip": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.cs [Design]",
+              "RelativeToolTip": "Rescue\\Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-05T13:52:27.083Z",
               "EditorCaption": " [Design]"
@@ -72,9 +76,9 @@
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.cs",
               "RelativeDocumentMoniker": "Rescue\\Form1.cs",
-              "ToolTip": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.cs*",
-              "RelativeToolTip": "Rescue\\Form1.cs*",
-              "ViewState": "AQIAAFcBAAAAAAAAAAAqwGUBAABBAAAA",
+              "ToolTip": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Form1.cs",
+              "RelativeToolTip": "Rescue\\Form1.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAlAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-06T07:59:25.934Z",
               "EditorCaption": ""
