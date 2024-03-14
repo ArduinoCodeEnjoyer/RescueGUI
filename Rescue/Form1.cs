@@ -5,7 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Sockets;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,41 +21,6 @@ namespace Rescue
         public Form1()
         {
             InitializeComponent();
-        }
-
-        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-
-        }
-
-        private void webBrowser2_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-
-        }
-
-        private void url1Enter_Click(object sender, EventArgs e)
-        {
-            webBrowser1.Navigate(txtUrl1.Text);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            webBrowser1.Refresh();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            webBrowser2.Refresh();
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            webBrowser2.Navigate(txtUrl2.Text);
-        }
-
-        private void txtUrl2_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -250,34 +217,22 @@ namespace Rescue
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0)
                             {
-                                message = "L\n";
-                                data = System.Text.Encoding.ASCII.GetBytes(message);
-                                stream = client.GetStream();
-                                stream.Write(data, 0, data.Length);
+                                SendMessage(stream, "L");
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.DPadRight) != 0)
                             {
-                                message = "R\n";
-                                data = System.Text.Encoding.ASCII.GetBytes(message);
-                                stream = client.GetStream();
-                                stream.Write(data, 0, data.Length);
+                                SendMessage(stream, "R");
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.DPadUp) != 0)
                             {
-                                message = "F\n";
-                                data = System.Text.Encoding.ASCII.GetBytes(message);
-                                stream = client.GetStream();
-                                stream.Write(data, 0, data.Length);
+                                SendMessage(stream, "F");
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.DPadDown) != 0)
                             {
-                                message = "B\n";
-                                data = System.Text.Encoding.ASCII.GetBytes(message);
-                                stream = client.GetStream();
-                                stream.Write(data, 0, data.Length);
+                                SendMessage(stream, "B");
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.LeftThumb) != 0)
@@ -386,19 +341,20 @@ namespace Rescue
                             pwr.Text += responseData;
                         }*/
                     }
+
                 }
             }
             catch {
                 output.Text += "\n Error: Could not connect to Arduino Server";
             }
         }
-
-        private void Form1_Load(object sender, EventArgs e)
+        static void SendMessage(NetworkStream stream, string message)
         {
-
+            byte[] data = Encoding.ASCII.GetBytes(message);
+            stream.Write(data, 0, data.Length);
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
 
         }
@@ -546,19 +502,9 @@ namespace Rescue
             }
         }
 
-        private void button3_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             output.Text = "";
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-            int linecount = output.Lines.Length;
         }
 
         private void ipAddress_TextChanged(object sender, EventArgs e)
@@ -586,26 +532,6 @@ namespace Rescue
 
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void webBrowser1_DocumentCompleted_1(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-
-        }
-
         private void tableLayoutPanel7_Paint(object sender, PaintEventArgs e)
         {
 
@@ -626,42 +552,86 @@ namespace Rescue
 
         }
 
-        private void tableLayoutPanel4_Paint_1(object sender, PaintEventArgs e)
+        private void button4_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                webView21.Source = new Uri(txtUrl2.Text);
+            }
+            catch (UriFormatException)
+            {
+                webView21.Source = new Uri("https://" + txtUrl2.Text);
+            }
+        }
+
+        private void tableLayoutPanel10_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-        private void txtUrl2_TextChanged_1(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void url1Enter_Click_1(object sender, EventArgs e)
-        {
-            webBrowser1.Navigate(txtUrl1.Text);
-        }
-
-        private void reload1_Click(object sender, EventArgs e)
-        {
-            webBrowser1.Refresh();
-        }
-
-        private void button4_Click_1(object sender, EventArgs e)
-        {
-            webBrowser2.Navigate(txtUrl2.Text);
-        }
-
-        private void reload2_Click(object sender, EventArgs e)
-        {
-            webBrowser2.Refresh();
-        }
-
-        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        private void webView21_Click_1(object sender, EventArgs e)
         {
 
         }
 
-        private void txtUrl1_TextChanged(object sender, EventArgs e)
+        private void ForwardUrl2_Click_1(object sender, EventArgs e)
+        {
+            webView21.GoForward();
+        }
+
+        private void BackUrl2_Click_1(object sender, EventArgs e)
+        {
+            webView21.GoBack();
+        }
+
+        private void reload2_Click_1(object sender, EventArgs e)
+        {
+            webView21.Reload();
+        }
+
+        private void reload1_Click_1(object sender, EventArgs e)
+        {
+            webView22.Reload();
+        }
+
+        private void BackUrl1_Click_1(object sender, EventArgs e)
+        {
+            webView22.GoBack();
+        }
+
+        private void ForwardUrl1_Click_1(object sender, EventArgs e)
+        {
+            webView22.GoForward();
+        }
+
+        private void url1Enter_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                webView22.Source = new Uri(txtUrl2.Text);
+            }
+            catch (UriFormatException)
+            {
+                webView22.Source = new Uri("https://" + txtUrl1.Text);
+            }
+        }
+
+        private void tableLayoutPanel13_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtUrl2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel9_Paint(object sender, PaintEventArgs e)
         {
 
         }
