@@ -1,6 +1,0 @@
-2024/03/14-21:43:02.062 2fcc Reusing MANIFEST C:\Users\sepia\source\repos\Rescue\Rescue\bin\Debug\Rescue.exe.WebView2\EBWebView\Default\IndexedDB\https_www.youtube.com_0.indexeddb.leveldb/MANIFEST-000001
-2024/03/14-21:43:02.062 2fcc Recovering log #3
-2024/03/14-21:43:02.067 2fcc Reusing old log C:\Users\sepia\source\repos\Rescue\Rescue\bin\Debug\Rescue.exe.WebView2\EBWebView\Default\IndexedDB\https_www.youtube.com_0.indexeddb.leveldb/000003.log 
-2024/03/14-21:43:14.234 18ec Level-0 table #5: started
-2024/03/14-21:43:14.244 18ec Level-0 table #5: 1151711 bytes OK
-2024/03/14-21:43:14.254 18ec Delete type=0 #3

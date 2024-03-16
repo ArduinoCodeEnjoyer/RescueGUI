@@ -8,8 +8,8 @@
 
 #include <WiFi.h>
 
-#define WIFI_STA_NAME "TIMAUTISTIC"
-#define WIFI_STA_PASS "LoongTis"
+#define WIFI_STA_NAME "SiC-2.4GHz"
+#define WIFI_STA_PASS "sicsicsic"
 
 unsigned long previousMillis = 0;   // will store last time LED was updated
 const long interval = 1000;        // interval at which to blink (milliseconds)
@@ -50,38 +50,35 @@ void loop() {
     while (client.connected()) {
       char command;
       if (client.available()) {
+        if (client.available() >= 4) {
+          int rt_rx, lt_rx;
+          client.readBytes((char*)&rt_rx, sizeof(rt_rx));
+          client.readBytes((char*)&lt_rx, sizeof(lt_rx));
 
+          int rtmap = map(rt_rx, 0, 1023, 0, 255);
+          int ltmap = map(lt_rx, 0, 1023, 0, 255);
+
+          Forward(rtmap);
+          Backward(ltmap);
+        }
         command = client.read();
-//        Serial.write(command);
-//        if (command == 'F') {
-//          Forward();
-//        }
-//        else if (command == 'B') {
-//          Backward();
-//        }
-//        else if (command == 'R') {
-//          Right();
-//        }
-//        else if (command == 'L') {
-//          Left();
-//        }
-//        else {
-//          delay(25);
-//          Stop();
-//        }
-        
+        Serial.write(command);
+
         switch (command) {
-          case 'F':
-            Forward();
-            break;
-          case 'B':
-            Backward();
-            break;
+//          case 'F':
+//            Forward();
+//            break;
+//          case 'B':
+//            Backward();
+//            break;
           case 'L':
             Left();
             break;
           case 'R':
             Right();
+            break;
+          case 'S':
+            Stop();
             break;
         }
       }
@@ -90,26 +87,27 @@ void loop() {
     }
     client.stop();
     Serial.println("client disonnected");
+    Stop();
   }
   delay(10);
 }
 
-void Forward() {
+void Forward(int Speed) {
   digitalWrite(Pin1, HIGH);
   digitalWrite(Pin2, LOW);
-  analogWrite(PWM1, 255);
+  analogWrite(PWM1, Speed);
   digitalWrite(Pin3, HIGH);
   digitalWrite(Pin4, LOW);
-  analogWrite(PWM2, 255);
+  analogWrite(PWM2, Speed);
 }
 
-void Backward() {
+void Backward(int Speed) {
   digitalWrite(Pin1, LOW);
   digitalWrite(Pin2, HIGH);
-  analogWrite(PWM1, 255);
+  analogWrite(PWM1, Speed);
   digitalWrite(Pin3, LOW);
   digitalWrite(Pin4, HIGH);
-  analogWrite(PWM2, 255);
+  analogWrite(PWM2, Speed);
   //Serial.println("Backward");
 }
 

@@ -121,7 +121,10 @@ namespace Rescue
                 if (controller.IsConnected)
                 {
                     output.Text += "Controller connected.\n";
-
+                    bool checkbool = false;
+                    bool checkbool2 = false;
+                    bool checkbool3 = false;
+                    bool checkbool4 = false;
 
                     while (true)
                     {
@@ -160,21 +163,56 @@ namespace Rescue
                                 stream = client.GetStream();
                                 stream.Write(data, 0, data.Length);
                             }
-                            if ((state.Gamepad.LeftTrigger) != 0)
+                            if ((state.Gamepad.LeftTrigger) > 50)
                             {
-                                message = "Left Trigger: " + state.Gamepad.LeftTrigger + "\n";
-                                data = System.Text.Encoding.ASCII.GetBytes(message);
-                                stream = client.GetStream();
-                                stream.Write(data, 0, data.Length);
+                                if (checkbool == false)
+                                {
+                                    message = "B";
+                                    data = System.Text.Encoding.ASCII.GetBytes(message);
+                                    stream = client.GetStream();
+                                    stream.Write(data, 0, data.Length);
+                                    checkbool = true;
+                                }
+                                
                             }
-                            if ((state.Gamepad.RightTrigger) != 0)
+                            if ((state.Gamepad.LeftTrigger) < 49)
                             {
-                                message = "Right Trigger: " + state.Gamepad.RightTrigger + "\n";
-                                data = System.Text.Encoding.ASCII.GetBytes(message);
-                                stream = client.GetStream();
-                                stream.Write(data, 0, data.Length);
+                                if (checkbool == true)
+                                {
+                                    message = "S";
+                                    data = System.Text.Encoding.ASCII.GetBytes(message);
+                                    stream = client.GetStream();
+                                    stream.Write(data, 0, data.Length);
+                                    System.Threading.Thread.Sleep(10);
+                                    checkbool = false;
+                                }
+                                
                             }
-
+                            if ((state.Gamepad.RightTrigger) > 50)
+                            {
+                                if (checkbool2 == false)
+                                {
+                                    message = "F.";
+                                    data = System.Text.Encoding.ASCII.GetBytes(message);
+                                    stream = client.GetStream();
+                                    stream.Write(data, 0, data.Length);
+                                    checkbool2 = true;
+                                }
+                                
+                            }
+                            if ((state.Gamepad.RightTrigger) < 49)
+                            {
+                                if (checkbool2 == true)
+                                {
+                                    message = "S";
+                                    data = System.Text.Encoding.ASCII.GetBytes(message);
+                                    stream = client.GetStream();
+                                    stream.Write(data, 0, data.Length);
+                                    System.Threading.Thread.Sleep(10);
+                                    checkbool2 = false;
+                                }
+                                
+                            }
 
                             // Check if the A button is pressed
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.A) != 0)
@@ -217,22 +255,34 @@ namespace Rescue
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0)
                             {
-                                SendMessage(stream, "L");
+                                message = "L";
+                                data = System.Text.Encoding.ASCII.GetBytes(message);
+                                stream = client.GetStream();
+                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.DPadRight) != 0)
                             {
-                                SendMessage(stream, "R");
+                                message = "R";
+                                data = System.Text.Encoding.ASCII.GetBytes(message);
+                                stream = client.GetStream();
+                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.DPadUp) != 0)
                             {
-                                SendMessage(stream, "F");
+                                message = "F";
+                                data = System.Text.Encoding.ASCII.GetBytes(message);
+                                stream = client.GetStream();
+                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.DPadDown) != 0)
                             {
-                                SendMessage(stream, "B");
+                                message = "B";
+                                data = System.Text.Encoding.ASCII.GetBytes(message);
+                                stream = client.GetStream();
+                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.LeftThumb) != 0)
@@ -253,18 +303,55 @@ namespace Rescue
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.LeftShoulder) != 0)
                             {
-                                message = "Left Shoulder Button Pressed.\n";
-                                data = System.Text.Encoding.ASCII.GetBytes(message);
-                                stream = client.GetStream();
-                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                if(checkbool3 == false)
+                                {
+                                    message = "L";
+                                    data = System.Text.Encoding.ASCII.GetBytes(message);
+                                    stream = client.GetStream();
+                                    debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                    checkbool3 = true;
+                                }
+                                
+                            }
+                            if ((state.Gamepad.Buttons & GamepadButtonFlags.LeftShoulder) == 0)
+                            {
+                                if(checkbool3 == true)
+                                {
+                                    message = "S";
+                                    data = System.Text.Encoding.ASCII.GetBytes(message);
+                                    stream = client.GetStream();
+                                    debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                    System.Threading.Thread.Sleep(10);
+                                    checkbool3 = false;
+                                }
+                                
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.RightShoulder) != 0)
                             {
-                                message = "Right Shoulder Button Pressed.\n";
-                                data = System.Text.Encoding.ASCII.GetBytes(message);
-                                stream = client.GetStream();
-                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                if (checkbool4 == false)
+                                {
+                                    message = "R";
+                                    data = System.Text.Encoding.ASCII.GetBytes(message);
+                                    stream = client.GetStream();
+                                    debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                    checkbool4 = true;
+                                }
+                                
+                            }
+
+                            if ((state.Gamepad.Buttons & GamepadButtonFlags.RightShoulder) == 0)
+                            {
+                                if (checkbool4 == true)
+                                {
+                                    message = "S";
+                                    data = System.Text.Encoding.ASCII.GetBytes(message);
+                                    stream = client.GetStream();
+                                    debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                    System.Threading.Thread.Sleep(10);
+                                    checkbool4 = false;
+                                }
+                                
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.Start) != 0)
@@ -294,7 +381,7 @@ namespace Rescue
 
                             // Wait for a short amount of time to reduce CPU usage
 
-                            System.Threading.Thread.Sleep(1);
+                            System.Threading.Thread.Sleep(10);
                         }
                         else
                         {
@@ -303,7 +390,6 @@ namespace Rescue
                         }
 
                         int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-
 
                         receivedData.Append(Encoding.ASCII.GetString(buffer, 0, bytesRead));
 
@@ -626,12 +712,56 @@ namespace Rescue
 
         }
 
+        private void txtUrl2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+            {
+                try
+                {
+                    webView21.Source = new Uri(txtUrl2.Text);
+                }
+                catch (UriFormatException)
+                {
+                    webView21.Source = new Uri("https://" + txtUrl2.Text);
+                }
+            }
+        }
         private void txtUrl2_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void tableLayoutPanel9_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-        private void tableLayoutPanel9_Paint(object sender, PaintEventArgs e)
+        private void txtUrl1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void txtUrl1_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.KeyCode == Keys.Return)
+            {
+                try
+                {
+                    webView22.Source = new Uri(txtUrl1.Text);
+                }
+                catch (UriFormatException)
+                {
+                    webView22.Source = new Uri("https://" + txtUrl1.Text);
+                }
+            }
+        }
+
+        private void tableLayoutPanel5_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
         {
 
         }
