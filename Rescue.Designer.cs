@@ -100,10 +100,10 @@
             // tcpConnect
             // 
             tcpConnect.Dock = System.Windows.Forms.DockStyle.Fill;
-            tcpConnect.Location = new System.Drawing.Point(289, 2);
+            tcpConnect.Location = new System.Drawing.Point(283, 2);
             tcpConnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             tcpConnect.Name = "tcpConnect";
-            tcpConnect.Size = new System.Drawing.Size(77, 29);
+            tcpConnect.Size = new System.Drawing.Size(83, 29);
             tcpConnect.TabIndex = 13;
             tcpConnect.Text = "Connect";
             tcpConnect.UseVisualStyleBackColor = true;
@@ -223,7 +223,7 @@
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 94F));
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66666F));
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 82F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 89F));
             this.tableLayoutPanel9.Controls.Add(this.label5, 0, 0);
             this.tableLayoutPanel9.Controls.Add(this.portTxt, 1, 0);
             this.tableLayoutPanel9.Controls.Add(this.label3, 2, 0);
@@ -255,7 +255,7 @@
             this.portTxt.Location = new System.Drawing.Point(48, 2);
             this.portTxt.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.portTxt.Name = "portTxt";
-            this.portTxt.Size = new System.Drawing.Size(43, 22);
+            this.portTxt.Size = new System.Drawing.Size(41, 22);
             this.portTxt.TabIndex = 23;
             this.portTxt.Text = "80";
             this.portTxt.TextChanged += new System.EventHandler(this.textBox3_TextChanged_1);
@@ -264,7 +264,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Location = new System.Drawing.Point(97, 0);
+            this.label3.Location = new System.Drawing.Point(95, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(88, 33);
             this.label3.TabIndex = 16;
@@ -275,12 +275,12 @@
             // ipAddress
             // 
             this.ipAddress.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ipAddress.Location = new System.Drawing.Point(191, 2);
+            this.ipAddress.Location = new System.Drawing.Point(189, 2);
             this.ipAddress.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ipAddress.Name = "ipAddress";
-            this.ipAddress.Size = new System.Drawing.Size(92, 22);
+            this.ipAddress.Size = new System.Drawing.Size(88, 22);
             this.ipAddress.TabIndex = 14;
-            this.ipAddress.Text = "192.168.";
+            this.ipAddress.Text = "192.168.1.177";
             this.ipAddress.TextChanged += new System.EventHandler(this.ipAddress_TextChanged);
             // 
             // tableLayoutPanel2

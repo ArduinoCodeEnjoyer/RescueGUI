@@ -3,24 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\use\\source\\repos\\RescueGUI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|c:\\users\\use\\source\\repos\\rescuegui\\rescue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|C:\\Users\\use\\source\\repos\\RescueGUI\\rescue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|solutionrelative:rescue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|C:\\Users\\use\\source\\repos\\RescueGUI\\rescue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|c:\\users\\use\\source\\repos\\rescuegui\\rescue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|solutionrelative:rescue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|C:\\Users\\use\\source\\repos\\RescueGUI\\rescue\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|solutionrelative:rescue\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|C:\\Users\\use\\source\\repos\\RescueGUI\\rescue.resx||{FF4D6ACA-9352-4A5F-821E-F4D6EBDCAB11}",
+      "RelativeMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|solutionrelative:rescue.resx||{FF4D6ACA-9352-4A5F-821E-F4D6EBDCAB11}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|C:\\Users\\use\\source\\repos\\RescueGUI\\rescue.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|solutionrelative:rescue.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|C:\\Users\\use\\source\\repos\\RescueGUI\\rescue.resx||{FF4D6ACA-9352-4A5F-821E-F4D6EBDCAB11}",
-      "RelativeMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|solutionrelative:rescue.resx||{FF4D6ACA-9352-4A5F-821E-F4D6EBDCAB11}"
+      "AbsoluteMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|C:\\Users\\use\\source\\repos\\RescueGUI\\rescue\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5F9C4B20-BB33-40A5-9F3B-DDCF109846C6}|Rescue\\Rescue.csproj|solutionrelative:rescue\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,12 +30,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -44,21 +40,22 @@
               "RelativeDocumentMoniker": "Rescue.cs",
               "ToolTip": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue.cs",
               "RelativeToolTip": "Rescue.cs",
-              "ViewState": "AQIAAMIAAAAAAAAAAAAkwIMAAAA6AAAA",
+              "ViewState": "AQIAAIMAAAAAAAAAAAAYwI0AAABCAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-15T04:33:25.178Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "Rescue.resx",
               "DocumentMoniker": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue.resx",
               "RelativeDocumentMoniker": "Rescue.resx",
               "ToolTip": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue.resx",
               "RelativeToolTip": "Rescue.resx",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
-              "WhenOpened": "2024-03-15T04:33:09.373Z"
+              "WhenOpened": "2024-03-15T04:33:09.373Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -68,19 +65,20 @@
               "RelativeDocumentMoniker": "Rescue.Designer.cs",
               "ToolTip": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue.Designer.cs",
               "RelativeToolTip": "Rescue.Designer.cs",
-              "ViewState": "AQIAAFIBAAAAAAAAAAAAAH4CAABYAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-15T04:33:07.128Z"
+              "WhenOpened": "2024-03-15T04:33:07.128Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Program.cs",
               "RelativeDocumentMoniker": "Rescue\\Program.cs",
               "ToolTip": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue\\Program.cs",
               "RelativeToolTip": "Rescue\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-15T04:32:59.001Z"
             },
@@ -93,7 +91,8 @@
               "ToolTip": "C:\\Users\\use\\source\\repos\\RescueGUI\\Rescue.cs [Design]",
               "RelativeToolTip": "Rescue.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-14T16:36:10.386Z"
+              "WhenOpened": "2024-03-14T16:36:10.386Z",
+              "EditorCaption": " [Design]"
             }
           ]
         }

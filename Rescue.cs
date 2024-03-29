@@ -13,6 +13,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SharpDX.XInput;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Rescue
 {
@@ -22,6 +24,8 @@ namespace Rescue
         {
             InitializeComponent();
         }
+        [DllImport("user32.dll")]
+        static extern IntPtr SetParent(IntPtr hwc, IntPtr hwp);
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -103,12 +107,10 @@ namespace Rescue
                 output.Text += "\n---------Connected to Arduino server.---------\n";
 
                 // Send data to the server
-                string message = "";
+                string message = "Hello";
                 byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
                 NetworkStream stream = client.GetStream();
-                System.Threading.Thread.Sleep(100);
-                // Receive data from the server
-
+                await Task.Delay(500);
                 Controller controller = new Controller(UserIndex.One);
 
                 byte[] buffer = new byte[256];
@@ -126,6 +128,11 @@ namespace Rescue
                     bool checkbool3 = false;
                     bool checkbool4 = false;
 
+                    bool flipperbool = false;
+                    bool flipperbool2 = false;
+                    bool flipperbool3 = false;
+                    bool flipperbool4 = false;
+
                     while (true)
                     {
                         // Get the current state of the controller
@@ -135,20 +142,27 @@ namespace Rescue
                         if (!state.PacketNumber.Equals(0))
                         {
                             // Print out the values of the thumbsticks
-                            if ((state.Gamepad.LeftThumbX) != 0)
+                            if ((state.Gamepad.LeftThumbX) >= -32767)
                             {
-                                message = "Left Thumbstick X: " + state.Gamepad.LeftThumbX + "\n";
+                                message = "2";
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
-                                stream.Write(data, 0, data.Length);
+                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
                             }
-                            if ((state.Gamepad.LeftThumbY) != 0)
+                            /*if ((state.Gamepad.LeftThumbX) >= 32767)
                             {
-                                message = "Left Thumbstick Y: " + state.Gamepad.LeftThumbY + "\n";
+                                message = "3";
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
-                                stream.Write(data, 0, data.Length);
-                            }
+                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                            }*/
+                            if ((state.Gamepad.LeftThumbY) >= 32767)
+                            {
+                                message = "H";
+                                data = System.Text.Encoding.ASCII.GetBytes(message);
+                                stream = client.GetStream();
+                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                            }/*`  
                             if ((state.Gamepad.RightThumbX) != 0)
                             {
                                 message = "Right Thumbstick X: " + state.Gamepad.RightThumbX + "\n";
@@ -162,20 +176,23 @@ namespace Rescue
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
                                 stream.Write(data, 0, data.Length);
-                            }
-                            if ((state.Gamepad.LeftTrigger) > 50)
+                            }*/
+
+
+                            if ((state.Gamepad.LeftTrigger) > 25)
                             {
                                 if (checkbool == false)
                                 {
-                                    message = "B";
+                                    message = "0";
                                     data = System.Text.Encoding.ASCII.GetBytes(message);
                                     stream = client.GetStream();
                                     stream.Write(data, 0, data.Length);
                                     checkbool = true;
                                 }
-                                
+
                             }
-                            if ((state.Gamepad.LeftTrigger) < 49)
+
+                            if ((state.Gamepad.LeftTrigger) < 24)
                             {
                                 if (checkbool == true)
                                 {
@@ -183,24 +200,27 @@ namespace Rescue
                                     data = System.Text.Encoding.ASCII.GetBytes(message);
                                     stream = client.GetStream();
                                     stream.Write(data, 0, data.Length);
-                                    System.Threading.Thread.Sleep(10);
                                     checkbool = false;
                                 }
-                                
+
                             }
-                            if ((state.Gamepad.RightTrigger) > 50)
+
+                            if ((state.Gamepad.RightTrigger) > 25)
                             {
                                 if (checkbool2 == false)
                                 {
-                                    message = "F.";
+                                    message = "Q";
                                     data = System.Text.Encoding.ASCII.GetBytes(message);
                                     stream = client.GetStream();
                                     stream.Write(data, 0, data.Length);
                                     checkbool2 = true;
                                 }
-                                
+
                             }
-                            if ((state.Gamepad.RightTrigger) < 49)
+
+                            //------------------ Stop ------------------//
+
+                            if ((state.Gamepad.RightTrigger) < 24)
                             {
                                 if (checkbool2 == true)
                                 {
@@ -208,86 +228,136 @@ namespace Rescue
                                     data = System.Text.Encoding.ASCII.GetBytes(message);
                                     stream = client.GetStream();
                                     stream.Write(data, 0, data.Length);
-                                    System.Threading.Thread.Sleep(10);
                                     checkbool2 = false;
                                 }
-                                
+
                             }
 
                             // Check if the A button is pressed
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.A) != 0)
                             {
-                                message = "A button pressed.\n";
+                                message = "A";
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
-                                debouncer.Debounce(() =>
+                                stream.Write(data, 0, data.Length);
+                                flipperbool = true;
+                            }
+
+                            if ((state.Gamepad.Buttons & GamepadButtonFlags.A) == 0)
+                            {
+                                if (flipperbool == true)
                                 {
+                                    message = "s";
+                                    data = System.Text.Encoding.ASCII.GetBytes(message);
+                                    stream = client.GetStream();
                                     stream.Write(data, 0, data.Length);
-                                });
+                                    flipperbool = false;
+                                }
+                                
                             }
 
                             // Check if the B button is pressed
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.B) != 0)
                             {
-                                message = "B button pressed.\n";
+                                message = "B";
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
-                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                stream.Write(data, 0, data.Length);
+                                flipperbool2 = true;
+                            }
+
+                            if ((state.Gamepad.Buttons & GamepadButtonFlags.B) == 0)
+                            {
+                                if (flipperbool2 == true)
+                                {
+                                    message = "s";
+                                    data = System.Text.Encoding.ASCII.GetBytes(message);
+                                    stream = client.GetStream();
+                                    stream.Write(data, 0, data.Length);
+                                    flipperbool2 = false;
+                                }
                             }
 
                             // Check if the Y button is pressed
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.Y) != 0)
                             {
-                                message = "Y button pressed.\n";
+                                message = "Y";
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
-                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                stream.Write(data, 0, data.Length);
+                                flipperbool3 = true;
+                            }
+
+                            if ((state.Gamepad.Buttons & GamepadButtonFlags.Y) == 0)
+                            {
+                                if (flipperbool3 == true)
+                                {
+                                    message = "s";
+                                    data = System.Text.Encoding.ASCII.GetBytes(message);
+                                    stream = client.GetStream();
+                                    stream.Write(data, 0, data.Length);
+                                    flipperbool3 = false;
+                                }
+                                
                             }
 
                             // Check if the X button is pressed
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.X) != 0)
                             {
-                                message = "X button pressed.\n";
+                                message = "X";
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
-                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                stream.Write(data, 0, data.Length);
+                                flipperbool4 = true;
+                            }
+
+                            if ((state.Gamepad.Buttons & GamepadButtonFlags.X) == 0)
+                            {
+                                if (flipperbool4 == true)
+                                {
+                                    message = "s";
+                                    data = System.Text.Encoding.ASCII.GetBytes(message);
+                                    stream = client.GetStream();
+                                    stream.Write(data, 0, data.Length);
+                                    flipperbool4 = false;
+                                }
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.DPadLeft) != 0)
                             {
-                                message = "L";
+                                message = "Z";
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
-                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                stream.Write(data, 0, data.Length);
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.DPadRight) != 0)
                             {
-                                message = "R";
+                                message = "C";
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
-                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                stream.Write(data, 0, data.Length);
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.DPadUp) != 0)
                             {
-                                message = "F";
+                                message = "U";
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
-                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                stream.Write(data, 0, data.Length);
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.DPadDown) != 0)
                             {
-                                message = "B";
+                                message = "D";
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
-                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                stream.Write(data, 0, data.Length);
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.LeftThumb) != 0)
                             {
-                                message = "Left Thumbstick Button Pressed.\n";
+                                message = "1";
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
                                 debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
@@ -295,7 +365,7 @@ namespace Rescue
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.RightThumb) != 0)
                             {
-                                message = "Right Thumbstick Button Pressed.\n";
+                                message = "]";
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
                                 debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
@@ -308,7 +378,7 @@ namespace Rescue
                                     message = "L";
                                     data = System.Text.Encoding.ASCII.GetBytes(message);
                                     stream = client.GetStream();
-                                    debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                    stream.Write(data, 0, data.Length);
                                     checkbool3 = true;
                                 }
                                 
@@ -320,8 +390,7 @@ namespace Rescue
                                     message = "S";
                                     data = System.Text.Encoding.ASCII.GetBytes(message);
                                     stream = client.GetStream();
-                                    debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
-                                    System.Threading.Thread.Sleep(10);
+                                    stream.Write(data, 0, data.Length);
                                     checkbool3 = false;
                                 }
                                 
@@ -334,7 +403,7 @@ namespace Rescue
                                     message = "R";
                                     data = System.Text.Encoding.ASCII.GetBytes(message);
                                     stream = client.GetStream();
-                                    debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                    stream.Write(data, 0, data.Length);
                                     checkbool4 = true;
                                 }
                                 
@@ -347,8 +416,7 @@ namespace Rescue
                                     message = "S";
                                     data = System.Text.Encoding.ASCII.GetBytes(message);
                                     stream = client.GetStream();
-                                    debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
-                                    System.Threading.Thread.Sleep(10);
+                                    stream.Write(data, 0, data.Length);
                                     checkbool4 = false;
                                 }
                                 
@@ -359,7 +427,7 @@ namespace Rescue
                                 message = "Start Button Pressed.\n";
                                 data = System.Text.Encoding.ASCII.GetBytes(message);
                                 stream = client.GetStream();
-                                debouncer.Debounce(() => { stream.Write(data, 0, data.Length); });
+                                stream.Write(data, 0, data.Length);
                             }
 
                             if ((state.Gamepad.Buttons & GamepadButtonFlags.Back) != 0)
@@ -381,7 +449,7 @@ namespace Rescue
 
                             // Wait for a short amount of time to reduce CPU usage
 
-                            System.Threading.Thread.Sleep(10);
+                            System.Threading.Thread.Sleep(1);
                         }
                         else
                         {
@@ -401,10 +469,10 @@ namespace Rescue
                             receivedData.Clear();
                         }
 
-                        if (receivedData.ToString().Contains("\n"))
+                        if (receivedData.ToString().Contains("Speed"))
                         {
                             string responseData = receivedData.ToString().Trim();
-                            output.Text += responseData;
+                            output.Text += "\nReceived: {0}" + responseData;
                         }
                         /*if (receivedData.ToString().Contains("Bus Volatage"))
                         {
@@ -485,15 +553,9 @@ namespace Rescue
                         {
                             output.Text += "Right Thumbstick Y: " + state.Gamepad.RightThumbY + "\n";
                         }
-                        if ((state.Gamepad.LeftTrigger) != 0)
-                        {
-                            output.Text += "Left Trigger: " + state.Gamepad.LeftTrigger + "\n";
-                        }
-                        if ((state.Gamepad.RightTrigger) != 0)
-                        {
-                            output.Text += "Right Trigger: " + state.Gamepad.RightTrigger + "\n";
-                        }
 
+                        //------------------ 9 Backward Speeds Section Starts Here ------------------//
+                        
 
                         // Check if the A button is pressed
                         if ((state.Gamepad.Buttons & GamepadButtonFlags.A) != 0)
@@ -549,16 +611,6 @@ namespace Rescue
                             output.Text += "Right Thumbstick Button Pressed.\n";
                         }
 
-                        if ((state.Gamepad.Buttons & GamepadButtonFlags.LeftShoulder) != 0)
-                        {
-                            output.Text += "Left Shoulder Button Pressed.\n";
-                        }
-
-                        if ((state.Gamepad.Buttons & GamepadButtonFlags.RightShoulder) != 0)
-                        {
-                            output.Text += "Right Shoulder Button Pressed.\n";
-                        }
-
                         if ((state.Gamepad.Buttons & GamepadButtonFlags.Start) != 0)
                         {
                             output.Text += "Start Button Pressed.\n";
@@ -573,7 +625,7 @@ namespace Rescue
                         // Add more button checks as needed
 
                         // Wait for a short amount of time to reduce CPU usage
-                        System.Threading.Thread.Sleep(50);
+                        System.Threading.Thread.Sleep(1);
                     }
                     else
                     {

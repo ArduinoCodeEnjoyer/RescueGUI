@@ -1,0 +1,432 @@
+$(document).ready(function () {
+	var streamres;
+	var abilityres;
+	var hstreams = null;
+	var sstreams = null;
+	var nstreams = null;
+	var hresolutions = null;
+	var sresolutions = null;
+	var nresolutions = null;
+	var username=J.cookie.get('username');
+	var password=J.cookie.get('password');
+	var curchn = J.cookie.get('curChannel');
+	var bAFSupport = false;
+	var hwinfo = dev_info_no_param(username,password, 'dev_get_hwinfo');
+	if((hwinfo+'').indexOf('fail')<0){
+		var bAFSupport = hwinfo.bAFSupport;
+	}
+var max_res_width;
+var max_res_height;
+function init_param(){
+	//获取某个通道的所有码流能力集
+	abilityres = get_chn_info(username,password, 'stream_get_all_ability',curchn);
+	if((abilityres+'').indexOf('fail')<0){
+		var allability = abilityres.all;
+		if(allability && allability.length>0){
+			for(var i=0;i<allability.length;i++){
+				if(curchn==allability[i].channelid){
+					var hropts = [];//高清分标率
+					var hfopts = [];//高清帧率
+					var hfmax;//高清最大帧率
+					var hfmin;//高清最小帧率
+					var sropts = [];var sfopts = [];var sfmin;var sfmax;
+					var nropts = [];var nfopts = [];var nfmin; var nfmax;
+					if(allability[i].streamid==0){//高清
+						hresolutions = allability[i].resolutions;
+						if(hresolutions && hresolutions.length>0){
+							for(var j=0;j<hresolutions.length;j++){
+								if(j==0)
+								{
+									max_res_width = hresolutions[j].width;
+									max_res_height = hresolutions[j].height;
+								}
+								hropts.push('<option value="'
+										+ hresolutions[j].width+'*'+hresolutions[j].height + '">'
+										+ hresolutions[j].width+'*'+hresolutions[j].height + '</option>');
+								if(!hfmax || hfmax<hresolutions[j].maxFr){
+									hfmax = hresolutions[j].maxFr;
+								}
+								if(!hfmin || hfmin>hresolutions[j].minFr){
+									hfmin = hresolutions[j].minFr;
+								}
+							}
+							$('#resolution_h').html(hropts.join(''));
+							for(var j=hfmin;j<=hfmax;j++){
+								hfopts.push('<option value="'
+										+ j + '">'
+										+ j + '</option>');
+							}
+							$('#frame_h').html(hfopts.join(''));
+						}
+						var options = [];
+						options.push('<option value="h264">H264</option>');
+						if(allability[i].bSupportH265){
+							options.push('<option value="h265">H265</option>');
+						}
+						$('#code_type_h').html(options.join(''));
+						if(!allability[i].bSupportSmartEnc){
+							$('#smartencode_h_group').hide();
+						}
+					}else if(allability[i].streamid==1){//标清
+						sresolutions = allability[i].resolutions;
+						if(sresolutions && sresolutions.length>0){
+							for(var j=0;j<sresolutions.length;j++){
+								sropts.push('<option value="'
+										+ sresolutions[j].width+'*'+sresolutions[j].height + '">'
+										+ sresolutions[j].width+'*'+sresolutions[j].height + '</option>');
+								if(!sfmax || sfmax<sresolutions[j].maxFr){
+									sfmax = sresolutions[j].maxFr;
+								}
+								if(!sfmin || sfmin>sresolutions[j].minFr){
+									sfmin = sresolutions[j].minFr;
+								}
+							}
+							$('#resolution_s').html(sropts.join(''));
+							for(var j=sfmin;j<=sfmax;j++){
+								sfopts.push('<option value="'
+										+ j + '">'
+										+ j + '</option>');
+							}
+							$('#frame_s').html(sfopts.join(''));
+						}
+						var options = [];
+						options.push('<option value="h264">H264</option>');
+						if(allability[i].bSupportH265){
+							options.push('<option value="h265">H265</option>');
+						}
+						$('#code_type_s').html(options.join(''));
+						if(!allability[i].bSupportSmartEnc){
+							$('#smartencode_s_group').hide();
+						}
+					}else if(allability[i].streamid==2){//互联网
+						nresolutions = allability[i].resolutions;
+						if(nresolutions && nresolutions.length>0){
+							for(var j=0;j<nresolutions.length;j++){
+								nropts.push('<option value="'
+										+ nresolutions[j].width+'*'+nresolutions[j].height + '">'
+										+ nresolutions[j].width+'*'+nresolutions[j].height + '</option>');
+								if(!nfmax || nfmax<sresolutions[j].maxFr){
+									nfmax = nresolutions[j].maxFr;
+								}
+								if(!nfmin || nfmin>sresolutions[j].minFr){
+									nfmin = nresolutions[j].minFr;
+								}
+							}
+							$('#resolution_n').html(nropts.join(''));
+							for(var j=nfmin;j<=nfmax;j++){
+								nfopts.push('<option value="'
+										+ j + '">'
+										+ j + '</option>');
+							}
+							$('#frame_n').html(nfopts.join(''));
+						}
+						var options = [];
+						options.push('<option value="h264">H264</option>');
+						if(allability[i].bSupportH265){
+							options.push('<option value="h265">H265</option>');
+						}
+						$('#code_type_n').html(options.join(''));
+						if(!allability[i].bSupportSmartEnc){
+							$('#smartencode_n_group').hide();
+						}
+					}	
+				}
+			}
+		}
+	}
+	
+	//获取设备通道的码流设置信息初始化页面stream_get_params
+	streamres = get_chn_info(username,password, 'stream_get_params',curchn);
+	if((streamres+'').indexOf('fail')<0){
+		var streams = streamres.streams;
+		if(streams!=null){
+			$('#high_stream').hide();
+			$('#standard_stream').hide();
+			$('#net_stream').hide();
+			for (var i = 0; i < streams.length; i++) {
+				if(streams[i].channelid == parseInt(curchn)){
+					if(streams[i].streamid == 0){
+						$('#high_stream').show();
+						hstreams = streams[i];
+						$("#code_type_h").val(streams[i].venctype);
+						//$("#resolution_h").each(function (){  
+            //	$(this).children("option").each(function(){
+            //		var tempw = $(this).text().split('*')[0];
+            //		var temph = $(this).text().split('*')[1];
+            //		if(streams[i].width*streams[i].height >= tempw*temph)
+            //		{
+						//			$('#resolution_h').val(tempw+"*"+temph);
+            //			return false;
+            //		}
+            //	});
+          	//});
+						//$('#resolution_h').val(streams[i].width+"*"+streams[i].height);
+						if(streams[i].width*streams[i].height > 1920*1080)
+						{
+							if(max_res_width*max_res_height > 4500000)
+								maxresability = 5;
+							else if(max_res_width*max_res_height > 3500000)
+								maxresability = 4;
+							else if(max_res_width*max_res_height > 2500000)
+								maxresability = 3;
+							
+							if(streams[i].width*streams[i].height>4500000)
+								$('#resolution_h').get(0).selectedIndex=0;
+							else if(streams[i].width*streams[i].height>3500000)
+							{
+								if(maxresability==5)
+									$('#resolution_h').get(0).selectedIndex=1;
+								else
+									$('#resolution_h').get(0).selectedIndex=0;
+							}
+							else if(streams[i].width*streams[i].height>2500000)
+							{
+								if(maxresability==5)
+									$('#resolution_h').get(0).selectedIndex=2;
+								else if(maxresability==4)
+									$('#resolution_h').get(0).selectedIndex=1;
+								else
+									$('#resolution_h').get(0).selectedIndex=0;
+							}
+						}
+						else
+							$('#resolution_h').val(streams[i].width+"*"+streams[i].height);
+						$('#frame_h').val(streams[i].frameRate);
+						$('#stream_h').val(streams[i].rcMode);
+						$('#img_h').val(streams[i].quality);
+						$('#video_h').val(streams[i].bitRate);
+						stream_change('stream_h');
+						$('#smartencode_h').val(streams[i].smartencode);
+					}else if(streams[i].streamid == 1){
+						$('#standard_stream').show();
+						sstreams = streams[i];
+						$("#code_type_s").val(streams[i].venctype);
+						$('#resolution_s').val(streams[i].width+"*"+streams[i].height);
+						$('#frame_s').val(streams[i].frameRate);
+						$('#stream_s').val(streams[i].rcMode);
+						$('#img_s').val(streams[i].quality);
+						$('#video_s').val(streams[i].bitRate);
+						stream_change('stream_s');
+						$('#smartencode_s').val(streams[i].smartencode);
+					}else if(streams[i].streamid == 2){
+						$('#net_stream').show();
+						nstreams = streams[i];
+						$("#code_type_n").val(streams[i].venctype);
+						$('#resolution_n').val(streams[i].width+"*"+streams[i].height);
+						$('#frame_n').val(streams[i].frameRate);
+						$('#stream_n').val(streams[i].rcMode);
+						$('#img_n').val(streams[i].quality);
+						$('#video_n').val(streams[i].bitRate);
+						stream_change('stream_n');
+						$('#smartencode_n').val(streams[i].smartencode);
+					}
+				}
+			}
+		}
+	}
+}
+init_param();
+	// $('#video_h').blur(function(){
+	// 	var code_type_h = $('#code_type_h').find("option:selected").val();
+	// 	var resolution_h =$('#resolution_h').find("option:selected").val();
+	// 	var frame_h =$('#frame_h').find("option:selected").val();
+	// 	var def_video_h = calcBitrate(resolution_h.split('*')[0], resolution_h.split('*')[1], frame_h, code_type_h=='h265',bAFSupport);
+	// 	var inputKB = $('#video_h').val();
+	// 	if(inputKB!=''){
+	// 		inputKB=parseInt(inputKB);
+	// 	}else{
+	// 		inputKB = 0;
+	// 	}
+	// 	inputKB = rectifyBitrate(def_video_h,inputKB);
+	// 	$('#video_h').val(inputKB);
+	// });
+	
+	// $('#video_s').blur(function(){
+	// 	var code_type_s = $('#code_type_s').find("option:selected").val();
+	// 	var resolution_s =$('#resolution_s').find("option:selected").val();
+	// 	var frame_s =$('#frame_s').find("option:selected").val();
+	// 	var def_video_s = calcBitrate(resolution_s.split('*')[0], resolution_s.split('*')[1], frame_s, code_type_s=='h265',bAFSupport);
+	// 	var inputKB = $('#video_s').val();
+	// 	if(inputKB!=''){
+	// 		inputKB=parseInt(inputKB);
+	// 	}else
+	// 		inputKB = 0;
+	// 	inputKB = rectifyBitrate(def_video_s,inputKB);
+	// 	 $('#video_s').val(inputKB);
+	// });
+	
+	// $('#video_n').blur(function(){
+	// 	var code_type_n = $('#code_type_n').find("option:selected").val();
+	// 	var resolution_n =$('#resolution_n').find("option:selected").val();
+	// 	var frame_n =$('#frame_n').find("option:selected").val();
+	// 	var def_video_n = calcBitrate(resolution_n.split('*')[0], resolution_n.split('*')[1], frame_n, code_type_n=='h265',bAFSupport);
+	// 	var inputKB = $('#video_n').val();
+	// 	if(inputKB!=''){
+	// 		inputKB=parseInt(inputKB);
+	// 	}else
+	// 		inputKB = 0;
+	// 	inputKB = rectifyBitrate(def_video_n,inputKB);
+	// 	 $('#video_n').val(inputKB);
+	// });
+	// //帧率切换事件
+	// $('#resolution_h').bind("change",function(){
+	// 	var code_type_h = $('#code_type_h').find("option:selected").val();
+	// 	var resolution_h =$('#resolution_h').find("option:selected").val();
+	// 	var frame_h =$('#frame_h').find("option:selected").val();
+	// 	var video_h = calcBitrate(resolution_h.split('*')[0], resolution_h.split('*')[1], frame_h, code_type_h=='h265',bAFSupport);
+	// 	$('#video_h').val(video_h);
+	// });
+	
+	// $('#resolution_s').bind("change",function(){
+	// 	var code_type_s = $('#code_type_s').find("option:selected").val();
+	// 	var resolution_s =$('#resolution_s').find("option:selected").val();
+	// 	var frame_s =$('#frame_s').find("option:selected").val();
+	// 	var video_s = calcBitrate(resolution_s.split('*')[0], resolution_s.split('*')[1], frame_s, code_type_s=='h265',bAFSupport);
+	// 	$('#video_s').val(video_s);
+	// });
+	
+	// $('#resolution_n').bind("change",function(){
+	// 	var code_type_n = $('#code_type_n').find("option:selected").val();
+	// 	var resolution_n =$('#resolution_n').find("option:selected").val();
+	// 	var frame_n =$('#frame_n').find("option:selected").val();
+	// 	var video_n = calcBitrate(resolution_n.split('*')[0], resolution_n.split('*')[1], frame_n, code_type_n=='h265',bAFSupport);
+	// 	$('#video_n').val(video_n);
+	// });
+	// //分辨率切换事件
+	// $('#frame_h').bind("change",function(){
+	// 	var code_type_h = $('#code_type_h').find("option:selected").val();
+	// 	var resolution_h =$('#resolution_h').find("option:selected").val();
+	// 	var frame_h =$('#frame_h').find("option:selected").val();
+	// 	var video_h = calcBitrate(resolution_h.split('*')[0], resolution_h.split('*')[1], frame_h, code_type_h=='h265',bAFSupport);
+	// 	$('#video_h').val(video_h);
+	// });
+	
+	// $('#frame_s').bind("change",function(){
+	// 	var code_type_s = $('#code_type_s').find("option:selected").val();
+	// 	var resolution_s =$('#resolution_s').find("option:selected").val();
+	// 	var frame_s =$('#frame_s').find("option:selected").val();
+	// 	var video_s = calcBitrate(resolution_s.split('*')[0], resolution_s.split('*')[1], frame_s, code_type_s=='h265',bAFSupport);
+	// 	$('#video_s').val(video_s);
+	// });
+	
+	// $('#frame_n').bind("change",function(){
+	// 	var code_type_n = $('#code_type_n').find("option:selected").val();
+	// 	var resolution_n =$('#resolution_n').find("option:selected").val();
+	// 	var frame_n =$('#frame_n').find("option:selected").val();
+	// 	var video_n = calcBitrate(resolution_n.split('*')[0], resolution_n.split('*')[1], frame_n, code_type_n=='h265',bAFSupport);
+	// 	$('#video_n').val(video_n);
+	// });
+    // $('#code_type_h').bind("change",function(){$('#resolution_h').change() });
+    // $('#code_type_s').bind("change",function(){$('#resolution_s').change() });
+    // $('#code_type_n').bind("change",function(){$('#resolution_n').change() });
+	
+	$('#stream_h').change(function(){
+		stream_change('stream_h');
+	});
+	
+	$('#stream_s').change(function(){
+		stream_change('stream_s');
+	});
+	
+	$('#stream_n').change(function(){
+		stream_change('stream_n');
+	});
+	
+	function stream_change(stream_name){
+		if(stream_name=='stream_h'){
+			if($('#stream_h').find('option:selected').val()=='cbr'){
+				$('#img_h').attr('disabled',true);
+			}else{
+				$('#img_h').attr('disabled',false);
+			}
+		}else if (stream_name=='stream_s'){
+			if($('#stream_s').find('option:selected').val()=='cbr'){
+				$('#img_s').attr('disabled',true);
+			}else{
+				$('#img_s').attr('disabled',false);
+			}
+		}else if(stream_name=='stream_n'){
+			if($('#stream_n').find('option:selected').val()=='cbr'){
+				$('#img_n').attr('disabled',true);
+			}else{
+				$('#img_n').attr('disabled',false);
+			}
+		}
+	}
+	//保存按钮事件
+	$('#save').click(function(){
+		if((abilityres+'').indexOf('fail')>=0){
+			alert_message($.i18n.prop('hqmlcshxxsb'),'error');
+			return;
+		}
+		var code_type_h = $('#code_type_h').find("option:selected").val();
+		var resolution_h =$('#resolution_h').find("option:selected").val();
+		var frame_h =$('#frame_h').find("option:selected").val();
+		var stream_h =$('#stream_h').find("option:selected").val();
+		var img_h =$('#img_h').find("option:selected").val();
+		var video_h =$('#video_h').val();
+		var smartencode_h =$('#smartencode_h').val();
+		
+		var code_type_s = $('#code_type_s').find("option:selected").val();
+		var resolution_s =$('#resolution_s').find("option:selected").val();
+		var frame_s =$('#frame_s').find("option:selected").val();
+		var stream_s =$('#stream_s').find("option:selected").val();
+		var img_s =$('#img_s').find("option:selected").val();
+		var video_s =$('#video_s').val();
+		var smartencode_s =$('#smartencode_s').val();
+		
+		var code_type_n = $('#code_type_n').find("option:selected").val();
+		var resolution_n =$('#resolution_n').find("option:selected").val();
+		var frame_n =$('#frame_n').find("option:selected").val();
+		var stream_n =$('#stream_n').find("option:selected").val();
+		var img_n =$('#img_n').find("option:selected").val();
+		var video_n =$('#video_n').val();
+		var smartencode_n =$('#smartencode_n').val();
+		var streamparam=[];
+		if((streamres+'').indexOf('fail')<0){
+			if(hstreams ){
+				hstreams.venctype=code_type_h;
+				hstreams.width=parseInt(resolution_h.split('*')[0]);
+				hstreams.height=parseInt(resolution_h.split('*')[1]);
+				hstreams.frameRate = parseInt(frame_h);
+				hstreams.bitRate = parseInt(video_h);
+				hstreams.quality = parseInt(img_h);
+				hstreams.rcMode = stream_h;
+				hstreams.smartencode = smartencode_h;
+				streamparam.push(hstreams);
+			}
+			if(sstreams){
+				sstreams.venctype=code_type_s;
+				sstreams.width=parseInt(resolution_s.split('*')[0]);
+				sstreams.height=parseInt(resolution_s.split('*')[1]);
+				sstreams.frameRate = parseInt(frame_s);
+				sstreams.bitRate = parseInt(video_s);
+				sstreams.quality = parseInt(img_s);
+				sstreams.rcMode = stream_s;
+				sstreams.smartencode = smartencode_s;
+				streamparam.push(sstreams);
+			}
+			if(nstreams){
+				nstreams.venctype=code_type_n;
+				nstreams.width=parseInt(resolution_n.split('*')[0]);
+				nstreams.height=parseInt(resolution_n.split('*')[1]);
+				nstreams.frameRate = parseInt(frame_n);
+				nstreams.bitRate = parseInt(video_n);
+				nstreams.quality = parseInt(img_n);
+				nstreams.rcMode = stream_n;
+				nstreams.smartencode = smartencode_n;
+				streamparam.push(nstreams);
+			}
+			alert_message(set_stream_chn_info(username,password, 'stream_set_params',streamparam));
+		}
+		else{
+			alert_message($.i18n.prop('hqmlxxsb'),'error');
+		}
+	});
+
+	//默认配置事件
+	$('#default_setting').click(function(){
+		alert_message(dev_info_with_param(username,password,'dev_set_default_cfg',{"module":"stream","stream":{"bvdef":true,"badef":false}}));
+		init_param();
+	});
+});
